@@ -4,16 +4,16 @@ import { App } from "./components/editor-with-mask";
 import { itemGroup } from "../data";
 
 export default () => {
-  const cont = document.getElementById("root");
+  
 
   const handleMove = (e) => {
 
-    const deltaX = Math.abs(e.pageX - cont.offsetLeft - pos.current[0]);
-    const deltaY = Math.abs(e.pageY - cont.offsetTop - pos.current[1]);
+    const deltaX = Math.abs(e.pageX - cont.current.offsetLeft - pos.current[0]);
+    const deltaY = Math.abs(e.pageY - cont.current.offsetTop - pos.current[1]);
 
     const ePos = [
-      Math.min(pos.current[0], e.pageX - cont.offsetLeft),
-      Math.min(pos.current[1], e.pageY - cont.offsetTop),
+      Math.min(pos.current[0], e.pageX - cont.current.offsetLeft),
+      Math.min(pos.current[1], e.pageY - cont.current.offsetTop),
     ];
 
     draw.current = square(ePos, [deltaX, deltaY]);
@@ -120,7 +120,7 @@ export default () => {
   };
 
   const handleDown = (e) => {
-    pos.current = [e.pageX - cont.offsetLeft, e.pageY - cont.offsetTop];
+    pos.current = [e.pageX - cont.current.offsetLeft, e.pageY - cont.current.offsetTop];
 
     document.addEventListener("mousemove", handleMove);
     document.addEventListener("mouseup", handleUP);
@@ -136,9 +136,16 @@ export default () => {
 
   const selectItem = useRef();
 
+  const cont = useRef()
+
   const [group, setGroup] = useState(itemGroup);
 
   const [mask, setMask] = useState(null);
 
-  return <App itemGroup={group} mask={mask} />;
+  return (
+    <div id="containal" ref={cont}>
+  <App itemGroup={group} mask={mask} />;
+
+    </div>
+  )
 };
